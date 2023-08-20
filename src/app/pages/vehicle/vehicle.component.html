@@ -1,0 +1,52 @@
+<div>
+  <nz-list nzGrid>
+    <div nz-row [nzGutter]="16">
+      <div nz-col [nzXXl]="8" [nzXl]="8" [nzLg]="12" [nzMd]="12" [nzSm]="12" [nzXs]="24" *ngFor="let item of getPagedData()">
+        <nz-list-item>
+          <nz-card [nzTitle]="item.lpn + ' | ' + item.depot" [nzExtra]="extraTemplate">
+            <app-vehicle-detail [selectedVehicle]="getVehicleDetail(item.id)"></app-vehicle-detail>
+          </nz-card>
+        </nz-list-item>
+        <ng-template #extraTemplate>
+          <div class="flex justify-start items-center ">
+            <nz-space [nzSplit]="spaceSplit">
+              <ng-template #spaceSplit>
+                <nz-divider nzType="vertical"></nz-divider>
+              </ng-template>
+              <a
+                *nzSpaceItem nz-typography
+                (click)="edit(item.id)"
+              >
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+              <a
+                *nzSpaceItem nz-typography
+                nz-popconfirm
+                nzPopconfirmTitle="Are you sure?"
+                nzOkText="ok"
+                nzCancelText="cancel"
+                (nzOnConfirm)="confirmDelete(item.id)"
+              >
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </a>
+            </nz-space>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </nz-list>
+  <nz-list-pagination #pagination>
+    <div class="flex justify-end items-center ">
+      <nz-space [nzSplit]="spaceSplit">
+        <ng-template #spaceSplit>
+          <nz-divider nzType="vertical"></nz-divider>
+        </ng-template>
+        <button nz-button nzType="primary" (click)="create()" *nzSpaceItem>
+          Create
+        </button>
+        <nz-pagination *nzSpaceItem [nzPageIndex]="pageIndex" [nzTotal]="vehicles.length" [nzPageSize]="pageSize" (nzPageIndexChange)="onPageIndexChange($event)" nzShowSizeChanger (nzPageSizeChange)="onPageSizeChange($event)" [nzPageSizeOptions]="pageSizeOptions"></nz-pagination>
+      </nz-space>
+    </div>
+  </nz-list-pagination>
+</div>
+<app-vehicle-upsert></app-vehicle-upsert>

@@ -1,0 +1,22 @@
+<div class="{{this.tireClass}}" *ngIf="!!tire">
+  <button nz-button nzSize="small" nzType="primary" [nzDanger]="tire.mileage === '' || tire.mileageUnit === ''" nzShape="circle" nz-popover [nzPopoverTitle]="titleTemplate" [nzPopoverContent]="contentTemplate">
+    <span nz-icon nzType="info-circle" nzTheme="outline"></span>
+  </button>
+  <ng-template #titleTemplate>
+    {{tire.position}}
+  </ng-template>
+  <ng-template #contentTemplate>
+    <ng-container *ngIf="tire.mileageUnit !== '' && tire.mileage !== ''; else missingUnit">
+      <nz-tag nzColor="default">
+        {{ tire.mileage }} {{ tire.mileageUnit }}
+      </nz-tag>
+    </ng-container>
+    
+    <ng-template #missingUnit>
+      <nz-tag nzColor="warning">
+        {{ tire.mileage !== '' ? (tire.mileageUnit !== '' ? tire.mileage : 'Mileage is: ' + tire.mileage + ',') : 'Mileage' }}
+        {{ tire.mileageUnit !== '' ? (tire.mileage !== '' ? tire.mileageUnit : 'is missing but unit is: ' + tire.mileageUnit) : (tire.mileage !== '' ? 'Unit is missing' : 'and Unit are missing') }}
+      </nz-tag>
+    </ng-template>
+  </ng-template>
+</div>

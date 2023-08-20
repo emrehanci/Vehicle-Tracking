@@ -1,0 +1,64 @@
+<nz-drawer
+      [nzBodyStyle]="{ overflow: 'auto' }"
+      [nzMaskClosable]="false"
+      [nzWidth]="innerWidth < 820 ? '100vw' : 720"
+      nzPlacement="right"
+      [nzVisible]="!!selectedVehicle"
+      [nzTitle]="!!selectedVehicle && !!selectedVehicle.lpn ? 'Edit' : 'New'"
+      (nzOnClose)="close()"
+    >
+    <ng-container *nzDrawerContent>
+      <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please input vehicle lpn!">
+            <input formControlName="lpn" nz-input placeholder="LPN" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please input vehicle depot!">
+            <input formControlName="depot" nz-input placeholder="Depot" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <h5 nz-typography>Tires:</h5>
+          <div formArrayName="tires">
+            <div *ngFor="let tire of tires.controls; let i = index" [formGroupName]="i">
+              <nz-form-item>
+                <div nz-row [nzGutter]="16">
+                  <div nz-col nzSpan="7">
+                    <label for="position">Position:</label>
+                    <input nz-input formControlName="position" placeholder="Position of the tire (1L, 2R etc.)"/>
+                  </div>
+                  <div nz-col nzSpan="7">
+                    <label for="mileage">Mileage:</label>
+                    <input nz-input formControlName="mileage" placeholder="Mileage of the tire" />
+                  </div>
+                  <div nz-col nzSpan="7">
+                    <label for="mileageUnit">Mileage Unit:</label>
+                    <input nz-input formControlName="mileageUnit" placeholder="Unit of the mileage"/>
+                  </div>
+                  <div nz-col nzSpan="3" class="flex justify-center items-end pb-2">
+                    <a nz-typography *ngIf="tires.length > 4">
+                      <span nz-icon class="dynamic-delete-button" nzType="minus-circle-o" (click)="removeTire(i)" [nzTheme]="'fill'"></span>
+                    </a>
+                  </div>
+                </div>
+              </nz-form-item>
+            </div>
+          </div>
+        </nz-form-item>
+        <nz-form-item>
+          <div nz-row [nzGutter]="16">
+            <div nz-col nzSpan="24">
+              <button nz-button nzType="dashed" class="w-full" (click)="addTire($event)" [disabled]="tires.length >= 6">Add Tire</button>
+            </div>
+          </div>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" class="w-full" [disabled]="!validateForm.valid && (tires.length < 4 || tires.length === 5)">{{!!selectedVehicle && !!selectedVehicle.lpn ? 'Update' : 'Create'}}</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+</nz-drawer>

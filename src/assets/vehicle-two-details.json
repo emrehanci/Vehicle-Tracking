@@ -1,0 +1,43 @@
+{
+  "id": "2",
+  "lpn": "LPN2",
+  "depot": "Depot 2",
+  "tires": [
+    {
+      "id": "1",
+      "position": "1L",
+      "mileage": "2000",
+      "mileageUnit": "km"
+    },
+    {
+      "id": "2",
+      "position": "1R",
+      "mileage": "2500",
+      "mileageUnit": "km"
+    },
+    {
+      "id": "3",
+      "position": "2L",
+      "mileage": "",
+      "mileageUnit": "km"
+    },
+    {
+      "id": "4",
+      "position": "2R",
+      "mileage": "1000",
+      "mileageUnit": "km"
+    },
+    {
+      "id": "5",
+      "position": "3L",
+      "mileage": "",
+      "mileageUnit": ""
+    },
+    {
+      "id": "6",
+      "position": "3R",
+      "mileage": "1000",
+      "mileageUnit": "km"
+    }
+  ]
+}

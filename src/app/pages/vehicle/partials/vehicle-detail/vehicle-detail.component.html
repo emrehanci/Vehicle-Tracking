@@ -1,0 +1,19 @@
+<div *ngIf="!!selectedVehicle" class="flex justify-center items-center">
+  <ng-container [ngSwitch]="selectedVehicle.tires.length">
+    <div class="w-[200px] h-[200px] flex relative justify-center items-center" *ngSwitchCase="0">
+      <nz-empty></nz-empty>
+    </div>
+    <div class="w-[200px] h-[200px] flex relative justify-center items-center" *ngSwitchCase="4">
+      <ng-container *ngFor="let tire of selectedVehicle.tires">
+        <app-tire-detail [tire]="tire" [tireCount]="4"></app-tire-detail>
+      </ng-container>
+      <img class="w-auto max-h-full" src="/assets/two-tire.jpg">
+    </div>
+    <div class="w-[200px] h-[200px] flex relative justify-center items-center" *ngSwitchCase="6">
+      <ng-container *ngFor="let tire of selectedVehicle.tires">
+        <app-tire-detail [tire]="tire" [tireCount]="6"></app-tire-detail>
+      </ng-container>
+      <img class="w-auto max-h-full select-none" src="/assets/three-tire.jpg">
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "lpn": "LPN1",
+    "depot": "Depot 1"
+  },
+  {
+    "id": "2",
+    "lpn": "LPN2",
+    "depot": "Depot 2"
+  },
+  {
+    "id": "3",
+    "lpn": "LPN3",
+    "depot": "Depot 3"
+  }
+]
