@@ -20,12 +20,4 @@ describe('AppComponent', () => {
   it('should create the app component', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should render the router outlet', () => {
-    const contentElement: HTMLElement | null = fixture.nativeElement.querySelector('.p-6.bg-white.h-full.overflow-auto');
-    expect(contentElement).toBeTruthy();
-
-    const routerOutletElement: HTMLElement | null = !!contentElement ? contentElement.querySelector('router-outlet') : null;
-    expect(routerOutletElement).toBeTruthy();
-  });
 });

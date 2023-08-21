@@ -16,7 +16,7 @@ export function getWindow() { return window; }
 @NgModule({
   imports: [VehicleRoutingModule, ReactiveFormsModule, CommonModule, NzZorroModule],
   declarations: [VehicleComponent, VehicleDetailComponent, TireDetailComponent, VehicleUpsertComponent],
-  exports: [VehicleComponent],
+  exports: [VehicleComponent, VehicleUpsertComponent],
   providers: [{provide: 'window', useFactory: getWindow }]
 })
 

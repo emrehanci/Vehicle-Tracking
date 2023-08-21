@@ -1,25 +1,24 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Vehicle } from 'src/app/models/vehicle.model';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { VehicleDetail } from 'src/app/models/vehicle-detail.model';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectVehicleDetails, selectVehicles, selectedVehicle } from '../../store/app.selectors';
-import * as appActions from '../../store/app.actions';
-import { DataService } from 'src/app/data.service';
 import { Subscription } from 'rxjs';
+import { DataService } from 'src/app/data.service';
+import { VehicleDetail } from 'src/app/models/vehicle-detail.model';
+import { Vehicle } from 'src/app/models/vehicle.model';
+import { selectVehicleDetails, selectVehicles } from 'src/app/store/app.selectors';
+import * as appActions from '../../store/app.actions';
+import { Tire } from 'src/app/models/tire.model';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  selector: 'app-vehicle',
-  templateUrl: './vehicle.component.html'
+  selector: 'app-vehicle-table',
+  templateUrl: './vehicle-table.component.html'
 })
 
-export class VehicleComponent implements OnDestroy {
+export class VehicleTableComponent {
   private subscriptions: Subscription[] = [];
   vehicles: Vehicle[] = [];
   vehicleDetails: VehicleDetail[] = [];
-  pageSize: number = 3;
-  pageIndex: number = 1;
-  pageSizeOptions: number[] = [3,5,10];
+  expandSet = new Set<string>();
 
   constructor(private nzMessageService: NzMessageService, private store: Store, private dataService: DataService) {
     this.subscriptions.push(
@@ -48,14 +47,19 @@ export class VehicleComponent implements OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
-      subscription.unsubscribe();
-    });
+  onExpandChange(id: string, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
+    }
   }
 
-  edit(id: any): void {
-    this.store.dispatch(appActions.setSelectedVehicle({item: this.vehicleDetails.filter(x => x.id === id)[0]}));
+  getVehicleTires(id: string): Tire[] {
+    if(this.vehicleDetails.filter(x => x.id === id).length > 0){
+      return this.vehicleDetails.filter(x => x.id === id)[0].tires;
+    }
+    return [];
   }
 
   confirmDelete(id: any): void {
@@ -63,8 +67,8 @@ export class VehicleComponent implements OnDestroy {
     this.nzMessageService.info('Vehicle is deleted.');
   }
 
-  getVehicleDetail(id: string): VehicleDetail {
-    return this.vehicleDetails.filter(x => x.id === id)[0];
+  edit(id: any): void {
+    this.store.dispatch(appActions.setSelectedVehicle({item: this.vehicleDetails.filter(x => x.id === id)[0]}));
   }
 
   create(): void {
@@ -72,19 +76,5 @@ export class VehicleComponent implements OnDestroy {
     this.store.dispatch(appActions.setSelectedVehicle({item: {
       id: (Number(maxId) + 1).toString(),
     }}));
-  }
-
-  onPageIndexChange(pageIndex: number) {
-    this.pageIndex = pageIndex;
-  }
-
-  onPageSizeChange(pageSize: number) {
-    this.pageSize = pageSize;
-  }
-
-  getPagedData(): Vehicle[] {
-    const startIndex = (this.pageIndex - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    return this.vehicles.slice(startIndex, endIndex);
   }
 }

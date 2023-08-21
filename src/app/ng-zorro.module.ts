@@ -20,6 +20,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 
@@ -46,7 +47,8 @@ registerLocaleData(en);
     NzDrawerModule,
     NzInputModule,
     NzLayoutModule,
-    NzIconModule
+    NzIconModule,
+    NzTableModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

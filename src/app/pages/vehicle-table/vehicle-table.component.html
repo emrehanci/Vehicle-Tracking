@@ -1,0 +1,85 @@
+<div>
+  <nz-table #nzTable nzBordered [nzData]="vehicles" nzTableLayout="fixed" [nzTitle]="createTemplate" [nzShowSizeChanger]="true" [nzPageSizeOptions]="[3,5,10]" [nzPageSize]="3">
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th [nzEllipsis]>LPN</th>
+        <th [nzEllipsis]>Depot</th>
+        <th [nzEllipsis]>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of nzTable.data">
+        <tr>
+          <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
+          <td [nzEllipsis]>{{ data.lpn }}</td>
+          <td [nzEllipsis]>{{ data.depot }}</td>
+          <td>
+            <div class="flex justify-start items-center ">
+              <nz-space [nzSplit]="spaceSplit">
+                <ng-template #spaceSplit>
+                  <nz-divider nzType="vertical"></nz-divider>
+                </ng-template>
+                <a
+                  *nzSpaceItem nz-typography
+                  (click)="edit(data.id)"
+                >
+                  <span nz-icon nzType="edit" nzTheme="outline"></span>
+                </a>
+                <a
+                  *nzSpaceItem nz-typography
+                  nz-popconfirm
+                  nzPopconfirmTitle="Are you sure to delete vehicle"
+                  nzOkText="Yes"
+                  nzCancelText="Cancel"
+                  (nzOnConfirm)="confirmDelete(data.id)"
+                >
+                  <span nz-icon nzType="delete" nzTheme="outline"></span>
+                </a>
+              </nz-space>
+            </div>
+          </td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(data.id)">
+          <span>
+            <nz-table #nzTable nzBordered [nzData]="getVehicleTires(data.id)" nzTableLayout="fixed" nzTitle="Tires">
+              <thead>
+                <tr>
+                  <th [nzEllipsis]>Position</th>
+                  <th [nzEllipsis]>Mileage</th>
+                  <th [nzEllipsis]>Mileage Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let data of nzTable.data">
+                  <tr>
+                    <td [nzEllipsis]>{{ data.position }}</td>
+                    <td [nzEllipsis]>{{ data.mileage }}</td>
+                    <td [nzEllipsis]>{{ data.mileageUnit }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </nz-table>
+          </span>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>
+<ng-template #createTemplate>
+  <div class="flex justify-between items-center">
+    <nz-space [nzSplit]="spaceSplit">
+      <ng-template #spaceSplit>
+        <nz-divider nzType="vertical"></nz-divider>
+      </ng-template>
+      <h3 *nzSpaceItem>
+        Vehicles
+      </h3>
+      <button nz-button nzType="primary" (click)="create()" *nzSpaceItem>
+        Create
+      </button>
+    </nz-space>
+  </div>
+</ng-template>
+
+<app-vehicle-upsert></app-vehicle-upsert>
