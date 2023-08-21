@@ -1,10 +1,14 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { VehicleDetail } from 'src/app/models/vehicle-detail.model';
 import { selectedVehicle } from 'src/app/store/app.selectors';
 import * as appActions from '../../../../store/app.actions';
 import {Validators, UntypedFormGroup, UntypedFormBuilder, FormArray } from '@angular/forms';
 import { Tire } from 'src/app/models/tire.model';
+import { Subscription } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
+const TirePositions: string[] = ["1L", "1R", "2L", "2R", "3L", "3R"];
 
 @Component({
   selector: 'app-vehicle-upsert',
@@ -12,31 +16,20 @@ import { Tire } from 'src/app/models/tire.model';
   styleUrls: ['./vehicle-upsert.component.scss']
 })
 
-export class VehicleUpsertComponent implements OnInit {
+export class VehicleUpsertComponent implements OnInit, OnDestroy {
+  selectedVehicleSubscription: Subscription | undefined;
   selectedVehicle: VehicleDetail | null = null;
+
   validateForm!: UntypedFormGroup;
   innerWidth: number = 920;
 
-  submitForm(): void {
-    let vehicle: VehicleDetail = this.validateForm.value;
-    if(!!this.selectedVehicle && !!this.selectedVehicle.lpn){
-      this.store.dispatch(appActions.updateVehicle({item: {id: vehicle.id, lpn: vehicle.lpn, depot: vehicle.depot}}));
-      this.store.dispatch(appActions.updateVehicleDetail({item: vehicle}));
-    } else {
-      this.store.dispatch(appActions.addVehicle({item: {id: vehicle.id, lpn: vehicle.lpn, depot: vehicle.depot}}));
-      this.store.dispatch(appActions.addVehicleDetail({item: vehicle}));
-    }
-    
-    this.close();
-  }
-
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize(_: any) {
     this.updateFullScreenState();
   }
 
-  constructor(private store: Store, private fb: UntypedFormBuilder) { 
-    this.store.select(selectedVehicle).subscribe((vehicles) => {
+  constructor(private store: Store, private fb: UntypedFormBuilder, private nzMessageService: NzMessageService) { 
+    this.selectedVehicleSubscription = this.store.select(selectedVehicle).subscribe((vehicles) => {
       this.selectedVehicle = vehicles;
       this.validateForm = this.fb.group({
         id: [vehicles?.id, [Validators.required]],
@@ -50,6 +43,12 @@ export class VehicleUpsertComponent implements OnInit {
 
   ngOnInit() {
     this.updateFullScreenState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.selectedVehicleSubscription) {
+      this.selectedVehicleSubscription.unsubscribe();
+    }
   }
 
   get tires(): FormArray {
@@ -72,8 +71,8 @@ export class VehicleUpsertComponent implements OnInit {
         this.fb.group({
           id: [tireData.id],
           position: [tireData.position, Validators.required],
-          mileage: [tireData.mileage, Validators.required],
-          mileageUnit: [tireData.mileageUnit, Validators.required]
+          mileage: [tireData.mileage],
+          mileageUnit: [tireData.mileageUnit]
         })
       );
     }
@@ -100,5 +99,36 @@ export class VehicleUpsertComponent implements OnInit {
     });
 
     this.tires.push(newTire);
+  }
+
+  submitForm(): void {
+    let vehicle: VehicleDetail = this.validateForm.value;
+
+    if(!this.checkTirePositionIsValid(vehicle.tires)){
+      return;
+    }
+
+    if(!!this.selectedVehicle && !!this.selectedVehicle.lpn){
+      this.store.dispatch(appActions.updateVehicle({item: {id: vehicle.id, lpn: vehicle.lpn, depot: vehicle.depot}}));
+      this.store.dispatch(appActions.updateVehicleDetail({item: vehicle}));
+    } else {
+      this.store.dispatch(appActions.addVehicle({item: {id: vehicle.id, lpn: vehicle.lpn, depot: vehicle.depot}}));
+      this.store.dispatch(appActions.addVehicleDetail({item: vehicle}));
+    }
+    
+    this.close();
+  }
+
+  checkTirePositionIsValid(tires: Tire[]): boolean {
+    let isValid: boolean = true;
+
+    tires.map((tire) => {
+      if(!(TirePositions.some(x => x === tire.position))){
+        this.nzMessageService.error("Invalid position for a tire!");
+        isValid = false;
+      }
+    });
+
+    return isValid;
   }
 }

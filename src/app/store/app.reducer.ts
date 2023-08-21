@@ -9,7 +9,7 @@ export interface AppState {
   vehicleDetails: VehicleDetail[];
 }
 
-const initialState: AppState = {
+export const initialState: AppState = {
   vehicles: [],
   selectedVehicle: null,
   vehicleDetails: []
@@ -22,7 +22,6 @@ export const appReducer = createReducer(
   on(appActions.addVehicleDetail, (state, { item }) => ({ ...state, vehicleDetails: [...state.vehicleDetails, item] })),
   on(appActions.updateVehicleDetail, (state, { item }) => ({ ...state, vehicleDetails: state.vehicleDetails.map(i => (i.id === item.id ? item : i)) })),
   on(appActions.updateVehicle, (state, { item }) => ({ ...state, vehicles: state.vehicles.map(i => (i.id === item.id ? item : i)) })),
-  on(appActions.deleteVehicle, (state, { item }) => ({ ...state, vehicles: state.vehicles.filter(i => i.id !== item) })),
-  on(appActions.deleteVehicleDetails, (state, { item }) => ({ ...state, vehicleDetails: state.vehicleDetails.filter(i => i.id !== item) })),
+  on(appActions.deleteVehicle, (state, { item }) => ({ ...state, vehicles: state.vehicles.filter(i => i.id !== item), vehicleDetails: state.vehicleDetails.filter(i => i.id !== item) })),
   on(appActions.setSelectedVehicle, (state, { item }) => ({ ...state, selectedVehicle: item })),
 );

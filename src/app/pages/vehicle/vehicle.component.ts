@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/models/vehicle.model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { VehicleDetail } from 'src/app/models/vehicle-detail.model';
@@ -6,13 +6,15 @@ import { Store } from '@ngrx/store';
 import { selectVehicleDetails, selectVehicles, selectedVehicle } from '../../store/app.selectors';
 import * as appActions from '../../store/app.actions';
 import { DataService } from 'src/app/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle',
   templateUrl: './vehicle.component.html'
 })
 
-export class VehicleComponent implements OnInit {
+export class VehicleComponent implements OnDestroy, OnInit {
+  private subscriptions: Subscription[] = [];
   vehicles: Vehicle[] = [];
   vehicleDetails: VehicleDetail[] = [];
   pageSize: number = 3;
@@ -20,25 +22,40 @@ export class VehicleComponent implements OnInit {
   pageSizeOptions: number[] = [3,5,10];
 
   constructor(private nzMessageService: NzMessageService, private store: Store, private dataService: DataService) {
-    this.dataService.getData().subscribe(data => {
-      data.map((vehicle) => {
-        this.dataService.getVehicleDetails(vehicle.id).subscribe(data => {
-          this.store.dispatch(appActions.addVehicleDetail({item: data}));
+    this.subscriptions.push(
+      this.dataService.getData().subscribe(data => {
+        data.map((vehicle) => {
+          this.subscriptions.push(
+            this.dataService.getVehicleDetails(vehicle.id).subscribe(data => {
+              this.store.dispatch(appActions.addVehicleDetail({item: data}));
+            })
+          );
+          this.store.dispatch(appActions.addVehicle({item: vehicle}));
         });
-        this.store.dispatch(appActions.addVehicle({item: vehicle}));
-      });
-    });    
+      })
+    );
 
-    this.store.select(selectVehicles).subscribe((vehicles) => {
-      this.vehicles = vehicles;
-    });
+    this.subscriptions.push(
+      this.store.select(selectVehicles).subscribe((vehicles) => {
+        this.vehicles = vehicles;
+      })
+    );
 
-    this.store.select(selectVehicleDetails).subscribe((vehicles) => {
-      this.vehicleDetails = vehicles;
-    });
+    this.subscriptions.push(
+      this.store.select(selectVehicleDetails).subscribe((vehicles) => {
+        this.vehicleDetails = vehicles;
+      })
+    );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 
   edit(id: any): void {
@@ -47,7 +64,7 @@ export class VehicleComponent implements OnInit {
 
   confirmDelete(id: any): void {
     this.store.dispatch(appActions.deleteVehicle({item: id}));
-    this.store.dispatch(appActions.deleteVehicleDetails({item: id}));
+    this.nzMessageService.info('Vehicle is deleted.');
   }
 
   getVehicleDetail(id: string): VehicleDetail {

@@ -14,8 +14,7 @@
     
     <ng-template #missingUnit>
       <nz-tag nzColor="warning">
-        {{ tire.mileage !== '' ? (tire.mileageUnit !== '' ? tire.mileage : 'Mileage is: ' + tire.mileage + ',') : 'Mileage' }}
-        {{ tire.mileageUnit !== '' ? (tire.mileage !== '' ? tire.mileageUnit : 'is missing but unit is: ' + tire.mileageUnit) : (tire.mileage !== '' ? 'Unit is missing' : 'and Unit are missing') }}
+        {{generateTireMileageMessage()}}
       </nz-tag>
     </ng-template>
   </ng-template>

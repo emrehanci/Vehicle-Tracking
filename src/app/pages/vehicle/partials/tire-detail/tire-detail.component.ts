@@ -38,4 +38,24 @@ export class TireDetailComponent implements OnInit {
     }
   }
 
+  generateTireMileageMessage() {
+    if(!!!this.tire){
+      return;
+    }
+
+    if (this.tire.mileage !== '') {
+      if (this.tire.mileageUnit !== '') {
+        return `${this.tire.mileage}`;
+      } else {
+        return `Mileage is: ${this.tire.mileage}, but Unit is missing`;
+      }
+    } else {
+      if (this.tire.mileageUnit !== '') {
+        return `Mileage is missing but unit is: ${this.tire.mileageUnit}`;
+      } else {
+        return `Mileage and Unit are missing`;
+      }
+    }
+  }
+
 }
