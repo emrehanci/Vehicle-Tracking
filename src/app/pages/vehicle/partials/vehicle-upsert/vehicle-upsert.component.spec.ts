@@ -137,6 +137,43 @@ describe('VehicleUpsertComponent', () => {
     expect(storeMock.dispatch).toHaveBeenCalledWith(appActions.updateVehicleDetail({ item: mockVehicle }));
   });
 
+  it('should call updateFullScreenState on window resize', () => {
+    spyOn(component, 'updateFullScreenState');
+
+    const resizeEvent = new Event('resize');
+    window.dispatchEvent(resizeEvent);
+
+    expect(component.updateFullScreenState).toHaveBeenCalled();
+  });
+
+  it('should submit the form and dispatch create actions', () => {
+    component.selectedVehicle = { id: "4" } as any;
+    component.validateForm = { value: mockVehicle } as any;
+
+    component.submitForm();
+
+    expect(storeMock.dispatch).toHaveBeenCalledWith(appActions.addVehicle({ item: { id: mockVehicle.id, lpn: mockVehicle.lpn, depot: mockVehicle.depot } }));
+    expect(storeMock.dispatch).toHaveBeenCalledWith(appActions.addVehicleDetail({ item: mockVehicle }));
+  });
+
+  it('should submit the form and expect undefined retun', () => {
+    const invalidVehicleTires: VehicleDetail = {
+      id: "1",
+      lpn: "LPN1",
+      depot: "Depot 1",
+      tires: [
+        { id: '1', position: '1L', mileage: '2000', mileageUnit: 'km' },
+        { id: '2', position: '6L', mileage: '2500', mileageUnit: 'km' }
+      ]
+    };
+    component.selectedVehicle = invalidVehicleTires;
+    component.validateForm = { value: invalidVehicleTires } as any;
+
+    var result = component.submitForm();
+
+    expect(result).toBeUndefined();
+  });
+
   it('should return true if tire positions are valid', () => {
     const validTires = [
       { id: '1', position: '1L', mileage: '2000', mileageUnit: 'km' },
@@ -146,5 +183,32 @@ describe('VehicleUpsertComponent', () => {
 
     expect(result).toBe(true);
     expect(messageServiceMock.error).not.toHaveBeenCalled();
+  });
+
+  it('should return true for valid tire positions', () => {
+    const validTires = [
+      { id: '1', position: '1L', mileage: '2000', mileageUnit: 'km' },
+      { id: '2', position: '1R', mileage: '2500', mileageUnit: 'km' }
+    ];
+    const isValid = component.checkTirePositionIsValid(validTires);
+    expect(isValid).toBe(true);
+  });
+
+  it('should return false for invalid tire positions', () => {
+    const invalidTires = [
+      { id: '1', position: '1L', mileage: '2000', mileageUnit: 'km' },
+      { id: '2', position: '6L', mileage: '2500', mileageUnit: 'km' }
+    ];
+    const isValid = component.checkTirePositionIsValid(invalidTires);
+    expect(isValid).toBe(false);
+  });
+
+  it('should return false for duplicate tire positions', () => {
+    const invalidTires = [
+      { id: '1', position: '1L', mileage: '2000', mileageUnit: 'km' },
+      { id: '2', position: '1L', mileage: '2500', mileageUnit: 'km' }
+    ];
+    const isValid = component.checkTirePositionIsValid(invalidTires);
+    expect(isValid).toBe(false);
   });
 });
