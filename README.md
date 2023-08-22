@@ -1,27 +1,124 @@
-# VehicleTracking
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+# Vehicle Tracking System
 
-## Development server
+## Description
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The Tire Management System is a project developed to allow users to view the current mileage status of tires in their vehicles. It provides an intuitive interface for users to manage and monitor tire information effectively.
 
-## Code scaffolding
+## Business Rules
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Valid tire positions are defined as follows: (1L, 1R, 2L, 2R, 3L, 3R)
+- It's assumed that there is only one tire for each position.
+- A vehicle can have a maximum of 6 tires.
 
-## Build
+## Prominent Used Libraries
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- [@angular/forms](https://www.npmjs.com/package/@angular/forms): Utilized for updating and adding new vehicles.
+- [@ngrx/store](https://www.npmjs.com/package/@ngrx/store): Employed for managing Redux states.
+- [@ngrx/store-devtools](https://www.npmjs.com/package/@ngrx/store-devtools): Ngrx/Store-Devtools: Used to visualize Redux states.
+- [ng-zorro-antd](https://www.npmjs.com/package/ng-zorro-antd): Utilized for standardized components.
+- [number-to-words](https://www.npmjs.com/package/number-to-words): Used for generating tire detail file names from numeric IDs.
+- [tailwindcss](https://www.npmjs.com/package/tailwindcss): Used for standardized CSS classes.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Models
 
-## Running end-to-end tests
+### Vehicle Model
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```typescript
+export interface Vehicle {
+    id: string;
+    lpn: string;
+    depot: string;
+}
+```
+### Vehicle Detail Model
+```typescript
+import { Tire } from  "./tire.model";
+import { Vehicle } from  "./vehicle.model";
 
-## Further help
+export  interface  VehicleDetail  extends  Vehicle {
+	tires: Tire[];
+}
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Tire Model
+```typescript
+export  interface  Tire {
+	id: string,
+	position: string,
+	mileage: string,
+	mileageUnit: string
+}
+```
+
+## Redux Structure
+
+```typescript
+export  interface  AppState {
+
+	vehicles:  Vehicle[];
+
+	selectedVehicle:  VehicleDetail  |  null;
+
+	vehicleDetails:  VehicleDetail[];
+
+}
+```
+
+## Features
+
+- Users can view vehicles in a tabular format through the 'vehicle-table' URL.
+- The tabular structure allows users to access tire details.
+- The Edit button enables users to modify vehicle details and tire information.
+- The Create button allows users to add new vehicles.
+- The Delete button lets users remove vehicles.
+- Users can add or remove up to 6 tires for each vehicle on the existing form page.
+- Users can view vehicle cards through the 'vehicle' URL.
+- Tire details for each vehicle can be accessed through information indicators on the vehicle model.
+- Red indicators indicate missing or incomplete tire information.
+- Pagination is available for viewing vehicles in both table and card views, and users can adjust the number of displayed entries.
+
+## Flow
+
+The `app.component.ts` reads the vehicle list JSON file located in the assets folder and populates our Redux states with vehicle details for each vehicle. Subsequent actions are processed based on user interactions and update the Redux states accordingly. The entire process ensures that users can easily manage and monitor their tire information.
+
+## Unit Tests
+
+Unit tests are crucial to ensure the stability and correctness of your application. In this project, we have employed Karma and Jasmine for conducting unit tests.
+
+### Karma
+
+[Karma](https://karma-runner.github.io/latest/index.html) is a test runner that enables us to execute JavaScript code in multiple real browsers. It offers a consistent testing environment and allows us to catch potential issues across different browser platforms.
+
+### Jasmine
+
+[Jasmine](https://jasmine.github.io/) is a behavior-driven development framework for testing JavaScript code. It provides a clean and expressive syntax for writing test cases, making it easier to describe and understand the expected behavior of your code.
+
+#### Running Unit Tests
+
+To run the unit tests, make sure you have the necessary dependencies installed. You can usually do this by running:
+
+```sh
+npm install
+```
+Once the dependencies are installed, you can execute the unit tests using the following command:
+```sh
+ng test
+```
+
+#### Coverage Summary
+Here is a summary of the test coverage for your project:
+- Statements: 91.95% (160/174)
+- Branches: 73.52% (25/34)
+- Functions: 95.83% (69/72)
+- Lines: 90.96% (141/155)
+
+
+## Contact
+
+For any inquiries or assistance, feel free to contact us at [emre.hanci@icloud.com](mailto:emre.hanci@icloud.com).
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
