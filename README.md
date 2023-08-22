@@ -27,9 +27,9 @@ The Tire Management System is a project developed to allow users to view the cur
 
 ```typescript
 export interface Vehicle {
-    id: string;
-    lpn: string;
-    depot: string;
+  id: string;
+  lpn: string;
+  depot: string;
 }
 ```
 ### Vehicle Detail Model
@@ -56,13 +56,9 @@ export  interface  Tire {
 
 ```typescript
 export  interface  AppState {
-
 	vehicles:  Vehicle[];
-
 	selectedVehicle:  VehicleDetail  |  null;
-
 	vehicleDetails:  VehicleDetail[];
-
 }
 ```
 
