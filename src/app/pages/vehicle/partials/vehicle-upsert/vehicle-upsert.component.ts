@@ -8,8 +8,6 @@ import { Tire } from 'src/app/models/tire.model';
 import { Subscription } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-const TirePositions: string[] = ["1L", "1R", "2L", "2R", "3L", "3R"];
-
 @Component({
   selector: 'app-vehicle-upsert',
   templateUrl: './vehicle-upsert.component.html',
@@ -19,7 +17,7 @@ const TirePositions: string[] = ["1L", "1R", "2L", "2R", "3L", "3R"];
 export class VehicleUpsertComponent implements OnInit, OnDestroy {
   selectedVehicleSubscription: Subscription | undefined;
   selectedVehicle: VehicleDetail | null = null;
-
+  tirePositions: string[] = ["1L", "1R", "2L", "2R", "3L", "3R"];
   validateForm!: UntypedFormGroup;
   innerWidth: number = 920;
 
@@ -123,11 +121,19 @@ export class VehicleUpsertComponent implements OnInit, OnDestroy {
     let isValid: boolean = true;
 
     tires.map((tire) => {
-      if(!(TirePositions.some(x => x === tire.position))){
+      if(!(this.tirePositions.some(x => x === tire.position))){
         this.nzMessageService.error("Invalid position for a tire!");
         isValid = false;
       }
     });
+
+    const tirePositions = tires.map(tire => tire.position);
+    const hasDuplicates = new Set(tirePositions).size !== tirePositions.length;
+
+    if (hasDuplicates) {
+      this.nzMessageService.error("Duplicate tire positions!");
+      isValid = false;
+    }
 
     return isValid;
   }

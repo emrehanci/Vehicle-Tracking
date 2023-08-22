@@ -9,7 +9,7 @@
       </ng-container>
       <img class="w-auto max-h-full" src="/assets/two-tire.jpg">
     </div>
-    <div class="w-48 h-48 flex relative justify-center items-center" *ngSwitchCase="6">
+    <div class="w-48 h-48 flex relative justify-center items-center" *ngSwitchDefault>
       <ng-container *ngFor="let tire of selectedVehicle.tires">
         <app-tire-detail [tire]="tire" [tireCount]="6"></app-tire-detail>
       </ng-container>

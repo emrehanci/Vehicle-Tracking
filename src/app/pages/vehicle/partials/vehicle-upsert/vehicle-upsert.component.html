@@ -27,7 +27,15 @@
                 <div nz-row [nzGutter]="16">
                   <div nz-col nzSpan="7">
                     <label for="position">Position:</label>
-                    <input nz-input formControlName="position" placeholder="Position of the tire (1L, 2R etc.)"/>
+                    <nz-select
+                      id="position"
+                      nz-input
+                      formControlName="position"
+                      nzPlaceHolder="Position of the tire"
+                      class="w-full"
+                    >
+                      <nz-option *ngFor="let tire of this.tirePositions;" [nzValue]="tire" [nzLabel]="tire"></nz-option>
+                    </nz-select>
                   </div>
                   <div nz-col nzSpan="7">
                     <label for="mileage">Mileage:</label>
@@ -38,7 +46,7 @@
                     <input nz-input formControlName="mileageUnit" placeholder="Unit of the mileage"/>
                   </div>
                   <div nz-col nzSpan="3" class="flex justify-center items-end pb-2">
-                    <a nz-typography *ngIf="tires.length > 4">
+                    <a nz-typography>
                       <span nz-icon class="dynamic-delete-button" nzType="minus-circle-o" (click)="removeTire(i)" [nzTheme]="'fill'"></span>
                     </a>
                   </div>

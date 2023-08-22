@@ -21,6 +21,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 
@@ -30,6 +31,7 @@ registerLocaleData(en);
   imports: [NzIconModule],
   exports: [
     NzTypographyModule,
+    NzSelectModule,
     NzFormModule,
     NzMessageServiceModule,
     NzPopconfirmModule,
