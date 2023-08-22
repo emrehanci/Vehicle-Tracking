@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Vehicle } from 'src/app/models/vehicle.model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { VehicleDetail } from 'src/app/models/vehicle-detail.model';
 import { Store } from '@ngrx/store';
-import { selectVehicleDetails, selectVehicles, selectedVehicle } from '../../store/app.selectors';
+import { selectVehicleDetails, selectVehicles } from '../../store/app.selectors';
 import * as appActions from '../../store/app.actions';
-import { DataService } from 'src/app/data.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -21,20 +20,7 @@ export class VehicleComponent implements OnDestroy {
   pageIndex: number = 1;
   pageSizeOptions: number[] = [3,5,10];
 
-  constructor(private nzMessageService: NzMessageService, private store: Store, private dataService: DataService) {
-    this.subscriptions.push(
-      this.dataService.getData().subscribe(data => {
-        data.map((vehicle) => {
-          this.subscriptions.push(
-            this.dataService.getVehicleDetails(vehicle.id).subscribe(data => {
-              this.store.dispatch(appActions.addVehicleDetail({item: data}));
-            })
-          );
-          this.store.dispatch(appActions.addVehicle({item: vehicle}));
-        });
-      })
-    );
-
+  constructor(private nzMessageService: NzMessageService, private store: Store) {
     this.subscriptions.push(
       this.store.select(selectVehicles).subscribe((vehicles) => {
         this.vehicles = vehicles;

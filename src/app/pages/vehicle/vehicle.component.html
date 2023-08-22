@@ -41,6 +41,11 @@
         <ng-template #spaceSplit>
           <nz-divider nzType="vertical"></nz-divider>
         </ng-template>
+        <a *nzSpaceItem routerLink="/vehicle-table">
+          <button nz-button nzType="primary">
+            Table View
+          </button>
+        </a>
         <button nz-button nzType="primary" (click)="create()" *nzSpaceItem>
           Create
         </button>

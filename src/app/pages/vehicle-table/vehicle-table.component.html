@@ -42,7 +42,7 @@
         </tr>
         <tr [nzExpand]="expandSet.has(data.id)">
           <span>
-            <nz-table #nzTable nzBordered [nzData]="getVehicleTires(data.id)" nzTableLayout="fixed" nzTitle="Tires">
+            <nz-table #nzTable nzBordered [nzData]="getVehicleTires(data.id)" nzTableLayout="fixed" [nzTitle]="tiresTemplate">
               <thead>
                 <tr>
                   <th [nzEllipsis]>Position</th>
@@ -62,24 +62,40 @@
             </nz-table>
           </span>
         </tr>
+        <ng-template #tiresTemplate>
+          <div>
+            <nz-space [nzSplit]="spaceSplit">
+              <ng-template #spaceSplit>
+                <nz-divider nzType="vertical"></nz-divider>
+              </ng-template>
+              <h5 *nzSpaceItem nz-typography [ngStyle]="{'marginBottom': '0rem'}">
+                Tires | {{ data.lpn }}
+              </h5>
+            </nz-space>
+          </div>
+        </ng-template>
       </ng-container>
     </tbody>
   </nz-table>
 </div>
 <ng-template #createTemplate>
-  <div class="flex justify-between items-center">
+  <div>
     <nz-space [nzSplit]="spaceSplit">
       <ng-template #spaceSplit>
         <nz-divider nzType="vertical"></nz-divider>
       </ng-template>
-      <h3 *nzSpaceItem>
+      <h5 *nzSpaceItem nz-typography [ngStyle]="{'marginBottom': '0rem'}">
         Vehicles
-      </h3>
+      </h5>
       <button nz-button nzType="primary" (click)="create()" *nzSpaceItem>
         Create
       </button>
+      <a *nzSpaceItem routerLink="/vehicle">
+        <button nz-button nzType="primary">
+          Card View
+        </button>
+      </a>
     </nz-space>
   </div>
 </ng-template>
-
 <app-vehicle-upsert></app-vehicle-upsert>
