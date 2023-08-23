@@ -41,17 +41,24 @@
         <ng-template #spaceSplit>
           <nz-divider nzType="vertical"></nz-divider>
         </ng-template>
-        <a *nzSpaceItem routerLink="/vehicle-table">
-          <button nz-button nzType="primary">
-            Table View
-          </button>
-        </a>
-        <button nz-button nzType="primary" (click)="create()" *nzSpaceItem>
-          Create
-        </button>
         <nz-pagination *nzSpaceItem [nzPageIndex]="pageIndex" [nzTotal]="vehicles.length" [nzPageSize]="pageSize" (nzPageIndexChange)="onPageIndexChange($event)" nzShowSizeChanger (nzPageSizeChange)="onPageSizeChange($event)" [nzPageSizeOptions]="pageSizeOptions"></nz-pagination>
       </nz-space>
     </div>
   </nz-list-pagination>
+  <div class="flex justify-end items-center mt-4">
+    <nz-space [nzSplit]="spaceSplit">
+      <ng-template #spaceSplit>
+        <nz-divider nzType="vertical"></nz-divider>
+      </ng-template>
+      <a *nzSpaceItem routerLink="/vehicle-table">
+        <button nz-button nzType="primary">
+          Table View
+        </button>
+      </a>
+      <button nz-button nzType="primary" (click)="create()" *nzSpaceItem>
+        Create
+      </button>
+    </nz-space>
+  </div>
 </div>
 <app-vehicle-upsert></app-vehicle-upsert>
