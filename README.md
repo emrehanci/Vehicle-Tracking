@@ -3,7 +3,7 @@
 
 ## Description
 
-The Tire Management System is a project developed to allow users to view the current mileage status of tires in their vehicles. It provides an intuitive interface for users to manage and monitor tire information effectively.
+The Vehicle Tracking System is a project developed to allow users to view the current mileage status of tires in their vehicles. It provides an intuitive interface for users to manage and monitor tire information effectively.
 
 ## Business Rules
 
