@@ -15,7 +15,7 @@ The Vehicle Tracking System is a project developed to allow users to view the cu
 
 - [@angular/forms](https://www.npmjs.com/package/@angular/forms): Utilized for updating and adding new vehicles.
 - [@ngrx/store](https://www.npmjs.com/package/@ngrx/store): Used for managing Redux states.
-- [@ngrx/store-devtools](https://www.npmjs.com/package/@ngrx/store-devtools): Ngrx/Store-Devtools: Used to visualize Redux states.
+- [@ngrx/store-devtools](https://www.npmjs.com/package/@ngrx/store-devtools): Used to visualize Redux states.
 - [ng-zorro-antd](https://www.npmjs.com/package/ng-zorro-antd): Utilized for standardized components.
 - [number-to-words](https://www.npmjs.com/package/number-to-words): Used for generating tire detail file names from numeric IDs.
 - [tailwindcss](https://www.npmjs.com/package/tailwindcss): Used for standardized CSS classes.
