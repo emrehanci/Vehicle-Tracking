@@ -104,7 +104,7 @@ ng test
 ```
 
 #### Coverage Summary
-Here is a summary of the test coverage for your project:
+Here is a summary of the test coverage for project:
 - Statements: 96.55% (168/174)
 - Branches: 85.29% (29/34)
 - Functions: 97.22% (70/72)
