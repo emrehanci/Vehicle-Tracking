@@ -81,7 +81,7 @@ The `app.component.ts` reads the vehicle list JSON file located in the assets fo
 
 ## Unit Tests
 
-Unit tests are crucial to ensure the stability and correctness of your application. In this project, we have employed Karma and Jasmine for conducting unit tests.
+Unit tests are crucial to ensure the stability and correctness of application. In this project, we have employed Karma and Jasmine for conducting unit tests.
 
 ### Karma
 
@@ -113,7 +113,7 @@ Here is a summary of the test coverage for your project:
 
 ## Contact
 
-For any inquiries or assistance, feel free to contact us at [emre.hanci@icloud.com](mailto:emre.hanci@icloud.com).
+For any inquiries or assistance, feel free to contact me at [emre.hanci@icloud.com](mailto:emre.hanci@icloud.com).
 
 ## License
 
